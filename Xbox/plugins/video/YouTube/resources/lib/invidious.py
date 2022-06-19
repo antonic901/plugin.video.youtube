@@ -1,12 +1,17 @@
 import requests
-import os.path
 import gui
+import xbmc, xbmcplugin
 
-## TODO Read this from configuration file or plugin settings
-API = "http://192.168.0.18:9007"
-REGION = "US"
-RESOLUTION = "360p"
-CONTAINER = "mp4"
+API = "http://{}:{}".format(xbmcplugin.getSetting('gateway'), xbmcplugin.getSetting('port'))
+REGION = xbmcplugin.getSetting("region")
+RESOLUTION =xbmcplugin.getSetting("resolution")
+CONTAINER = xbmcplugin.getSetting("container")
+
+search_order = xbmcplugin.getSetting("soptions")
+channel_sort = xbmcplugin.getSetting("coptions")
+
+print(API)
+print(REGION + RESOLUTION + CONTAINER + search_order + channel_sort)
 
 HEADERS = {'accept': 'application/json', 'user-agent': 'xbox-youtube'}
 
@@ -74,3 +79,74 @@ def getVideoLink(id):
         return None
     gui.notify("Video with ID: {} can not be found.".format(id))
     return None
+
+def getInfoAboutPlaylist(id):
+    params = {'fields': 'videos', 'pretty': '1'}
+    response = requests.get("{}/api/v1/playlists/{}".format(API, id), headers=HEADERS, params=params)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    playlist = response.json()
+    if not playlist:
+        gui.notify('Invidious return success, but video can not be found.')
+        return None
+    return playlist
+
+def getVideosForChannel(id, page_number, sort_by=channel_sort):
+    params = {'page': str(page_number), 'sort_by': sort_by}
+    response = requests.get("{}/api/v1/channels/{}/videos".format(API, id), headers=HEADERS, params=params)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    videos = response.json()
+    if not videos:
+        gui.notify('Invidious return success, but videos can not be found.')
+        return None
+    return videos
+
+def getLatestForChannel(id):
+    response = requests.get("{}/api/v1/channels/{}/latest".format(API, id), headers=HEADERS)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    videos = response.json()
+    if not videos:
+        gui.notify('Invidious return success, but videos can not be found.')
+        return None
+    return videos
+
+def getPlaylistsForChannel(id, sort_by=channel_sort):
+    params = {'sort_by': sort_by}
+    response = requests.get("{}/api/v1/channels/{}/playlists".format(API,id), headers=HEADERS, params=params)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    playlists = response.json()
+    if not playlists:
+        gui.notify('Invidious return success, but playlists can not be found.')
+        return None
+    return playlists['playlists']
+
+def searchChannel(id, q, page):
+    params = {'q': q, 'page': str(page)}
+    response = requests.get("{}/api/v1/channels/search/{}".format(API, id), headers=HEADERS, params=params)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    results = response.json()
+    if not results:
+        gui.notify('Invidious return success, but no results.')
+        return None
+    return results
+
+def getInfoAboutChannel(id, sort_by=channel_sort):
+    params = {'sort_by': sort_by, 'fields': 'relatedChannels', 'pretty': '1'}
+    response = requests.get("{}/api/v1/channels/{}".format(API, id), headers=HEADERS, params=params)
+    if response.status_code != 200:
+        gui.notify('Invidious returned status code: %s' % response.status_code)
+        return None
+    channels = response.json()
+    if not channels:
+        gui.notify('Invidious return success, but no results.')
+        return None
+    return channels

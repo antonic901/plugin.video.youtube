@@ -1,8 +1,7 @@
 'use strict';
 
-const INVIDIOUS = "http://tube.cthd.icu";
+const INVIDIOUS = "https://tube.cthd.icu";
 
-const { response } = require('express');
 let express = require('express'),
     bodyParser = require('body-parser'),
     morgan = require('morgan'),
@@ -65,23 +64,35 @@ api.get('/api/v1/popular', function (req, res) {
 });
 
 api.get('/api/v1/channels/:ucid', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/channels/' + req.params.ucid), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/channels/:ucid/videos', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/channels/' + req.params.ucid + '/videos'), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/channels/:ucid/latest', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/channels/' + req.params.ucid + '/latest'), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/channels/:ucid/playlists', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/channels/' + req.params.ucid + '/playlists'), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/channels/:ucid/comments', function (req, res) {
@@ -90,8 +101,11 @@ api.get('/api/v1/channels/:ucid/comments', function (req, res) {
 });
 
 api.get('/api/v1/channels/search/:ucid', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/channels/search/' + req.params.ucid), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/search/suggestions', function (req, res) {
@@ -108,8 +122,11 @@ api.get('/api/v1/search', function (req, res) {
 });
 
 api.get('/api/v1/playlists/:plid', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/playlists/' + req.params.plid), req.headers, req.query, null)
+        .then(result => {
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/mixes/:rdid', function (req, res) {
