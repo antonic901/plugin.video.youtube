@@ -5,7 +5,6 @@ import api
 d = dict(p.split('=') for p in sys.argv[2][1:].split('&') if len(p.split('=')) == 2)
 print("Dictionary: %s" % d)
 try:
-    # print("Usao sam u try...")
     f = {
         "index": api.list_index,
         "trending": api.list_trending,
@@ -21,10 +20,13 @@ try:
         "searchPlaylists": api.list_search_playlists,
         "searchChannels": api.list_search_channels,
         "subscriptions": api.list_subscriptions,
+        "settings": api.open_settings,
         "play": api.play,
-        "videosPlaylists": api.list_videos_playlists
+        "importSubscriptions": api.import_subscription,
+        "subscribe": api.subscribe,
+        "videosPlaylists": api.list_videos_playlists,
+        "suggestedVideos": api.list_suggested_videos
     }[d.pop('f', 'index')]
     f(**d)
 except:
-    # print("Usao sam u except...")
     api.list_index()

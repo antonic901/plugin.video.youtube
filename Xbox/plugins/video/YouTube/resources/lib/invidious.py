@@ -1,6 +1,6 @@
 import requests
 import gui
-import xbmc, xbmcplugin
+import xbmcplugin
 
 API = "http://{}:{}".format(xbmcplugin.getSetting('gateway'), xbmcplugin.getSetting('port'))
 REGION = xbmcplugin.getSetting("region")
@@ -9,9 +9,6 @@ CONTAINER = xbmcplugin.getSetting("container")
 
 search_order = xbmcplugin.getSetting("soptions")
 channel_sort = xbmcplugin.getSetting("coptions")
-
-print(API)
-print(REGION + RESOLUTION + CONTAINER + search_order + channel_sort)
 
 HEADERS = {'accept': 'application/json', 'user-agent': 'xbox-youtube'}
 
@@ -140,13 +137,13 @@ def searchChannel(id, q, page):
     return results
 
 def getInfoAboutChannel(id, sort_by=channel_sort):
-    params = {'sort_by': sort_by, 'fields': 'relatedChannels', 'pretty': '1'}
+    params = {'sort_by': sort_by, 'fields': 'author,authorUrl,relatedChannels', 'pretty': '1'}
     response = requests.get("{}/api/v1/channels/{}".format(API, id), headers=HEADERS, params=params)
     if response.status_code != 200:
         gui.notify('Invidious returned status code: %s' % response.status_code)
         return None
-    channels = response.json()
-    if not channels:
+    channel = response.json()
+    if not channel:
         gui.notify('Invidious return success, but no results.')
         return None
-    return channels
+    return channel

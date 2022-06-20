@@ -5,9 +5,12 @@ import os.path
 import invidious
 import urllib
 import utils
+import sys
+import xbmcaddon
 
 COLOR_CODE_MAIN = 'ffe52d27'
 PLUGIN_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+PLUGIN_RELATIVE_PATH = sys.argv[0]
 ICON = os.path.join(PLUGIN_PATH, 'icon.png')
 
 LIMIT = 20
@@ -17,11 +20,29 @@ def play(**kwargs):
     if stream_url:
         gui.play(stream_url)
 
+def open_settings():
+    xbmcaddon.Addon().openSettings()
+
+def import_subscription():
+    if utils.importSubcriptions():
+        gui.notify('Successfully imported subcriptions from YouTube.')
+    else:
+        gui.notify("Subscriptions file can't be found.")
+
+def subscribe(**kwargs):
+    channel = invidious.getInfoAboutChannel(kwargs.get('id'))
+    array = [kwargs.get('id'), channel['authorUrl'], channel['author']]
+    if utils.subscribe(array):
+        gui.notify('Successfully subscribed to channel %s' % channel['author'])
+    else:
+        gui.notify('Already subscribed.')
+
 def list_index():
     gui.add_item('Trending', url_params={'f': 'trending'}, is_folder=True)
     gui.add_item('Popular', url_params={'f': 'popular'}, is_folder=True)
     gui.add_item('Search', url_params={'f': 'searchMenu', 'q': '-'}, is_folder=True)
     gui.add_item('Subscriptions', url_params={'f': 'subscriptions'}, is_folder=True)
+    gui.add_item('Settings', url_params={'f': 'settings'}, is_playable=False)
     gui.end_listing()
 
 def list_trending(**kwargs):
@@ -47,7 +68,13 @@ def list_trending(**kwargs):
             duration_in_seconds = video['lengthSeconds']
             gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
                 {'title': title, 'plot': description, 'year': date, 'director': channel_title},
-                    duration_in_seconds, total_items=21)
+                    duration_in_seconds, 
+                    context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))], total_items=21)
 
     gui.end_listing()
 
@@ -63,7 +90,13 @@ def list_popular(**kwargs):
         duration_in_seconds = video['lengthSeconds']
         gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
             {'title': title, 'year': date, 'director': channel_title},
-                duration_in_seconds, total_items=LIMIT + 1)
+                duration_in_seconds, 
+                context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))], total_items=LIMIT + 1)
 
     gui.end_listing()
 
@@ -73,6 +106,7 @@ def list_channel_menu(**kwargs):
     gui.add_item('Playlists', url_params={'f': 'channelPlaylists', 'id': kwargs.get('id')}, is_folder=True)
     gui.add_item('Search', url_params={'f': 'channelSearch', 'id': kwargs.get('id'), 'q': '-'}, is_folder=True)
     gui.add_item('Related Channels', url_params={'f': 'channelRelated', 'id': kwargs.get('id')}, is_folder=True)
+    gui.add_item('Subscribe', url_params={'f': 'subscribe', 'id': kwargs.get('id')}, is_playable=False)
     gui.end_listing()
 
 def list_channel_videos(**kwargs):
@@ -88,7 +122,13 @@ def list_channel_videos(**kwargs):
         duration_in_seconds = video['lengthSeconds']
         gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
             {'title': title, 'year': date, 'director': channel_title},
-                duration_in_seconds, total_items=LIMIT + 1)
+                duration_in_seconds,
+                context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))], total_items=LIMIT + 1)
 
     kwargs['f'] = 'channelVideos'
     kwargs['pageNumber'] = page_number
@@ -109,7 +149,13 @@ def list_channel_latest(**kwargs):
         duration_in_seconds = video['lengthSeconds']
         gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
             {'title': title, 'year': date, 'director': channel_title},
-                duration_in_seconds, total_items=LIMIT + 1)
+                duration_in_seconds, 
+                context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))],total_items=LIMIT + 1)
 
     gui.end_listing()
 
@@ -128,7 +174,9 @@ def list_channel_playlists(**kwargs):
             url_params={'f': 'videosPlaylists', 'id': playlist_id},
             video_info_labels={'title': title, 'director': channel_title},
             is_folder=True,
-            total_items=LIMIT + 1)
+            context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id))], total_items=LIMIT + 1)
 
     gui.end_listing()
 
@@ -190,7 +238,13 @@ def list_search_videos(**kwargs):
             duration_in_seconds = video['lengthSeconds']
             gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
                 {'title': title, 'plot': description, 'year': date, 'director': channel_title},
-                    duration_in_seconds, total_items=LIMIT + 1)
+                    duration_in_seconds, 
+                    context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))],total_items=LIMIT + 1)
 
     kwargs['f'] = 'searchVideos'
     kwargs['pageNumber'] = page_number
@@ -225,7 +279,9 @@ def list_search_playlists(**kwargs):
                 url_params={'f': 'videosPlaylists', 'id': playlist_id},
                 video_info_labels={'title': title, 'director': channel_title},
                 is_folder=True,
-                total_items=LIMIT + 1)
+                context_menu_items=[
+                        ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id))], total_items=LIMIT + 1)
 
     kwargs['f'] = 'searchPlaylists'
     kwargs['pageNumber'] = page_number
@@ -277,10 +333,46 @@ def list_videos_playlists(**kwargs):
         duration_in_seconds = video['lengthSeconds']
         gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
             {'title': title},
-                duration_in_seconds, total_items=LIMIT + 1)
+                duration_in_seconds, 
+                context_menu_items=[
+                        # ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        # 'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))], total_items=LIMIT + 1)
 
     gui.end_listing()
 
 def list_subscriptions(**kwargs):
-    gui.notify('In development...')
+    channels = utils.readCsvFile()
+    for channel in channels:
+        channel_id = channel[0]
+        title = channel[2]
+        # description = channel['description']
+        # thumb = channel['authorThumbnails'][3]['url']
+        gui.add_item(title,
+            url_params={'f': 'channelMenu', 'id': channel_id},
+            video_info_labels={'title': title, 'director': title},
+            is_folder=True,
+            total_items=LIMIT + 1)
+
+    gui.end_listing()
+
+def list_suggested_videos(**kwargs):
+    videos = invidious.getInfoAboutVideo(kwargs.get('id'))['recommendedVideos']
+    for video in videos:
+        video_id = video['videoId']
+        title = video['title']
+        thumb = video['videoThumbnails'][3]['url']
+        duration_in_seconds = video['lengthSeconds']
+        gui.add_item(title, thumb, {'f': 'play', 'id': video_id},
+            {'title': title},
+                duration_in_seconds, 
+                context_menu_items=[
+                        # ('Go to [B]%s[/B]' % channel_title, 'xbmc.Container.Update(%s?'
+                        # 'f=channelMenu&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id)),
+                        ('Suggested videos', 
+                        'xbmc.Container.Update(%s?'
+                        'f=suggestedVideos&id=%s)' % (PLUGIN_RELATIVE_PATH, video_id))], total_items=LIMIT + 1)
+
     gui.end_listing()
