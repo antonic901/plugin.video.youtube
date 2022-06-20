@@ -20,6 +20,10 @@ def play(**kwargs):
     if stream_url:
         gui.play(stream_url)
 
+def clear_history():
+    utils.clear_history()
+    gui.notify('History cleared.')
+
 def open_settings():
     xbmcaddon.Addon().openSettings()
 
@@ -57,6 +61,10 @@ def list_trending(**kwargs):
 
     else:
         videos = invidious.getTrending(kwargs.pop('type', None))
+        if not videos:
+            gui.end_listing()
+            return
+
         for video in videos[:LIMIT]:
             video_id = video['videoId']
             title = video['title']
@@ -80,6 +88,10 @@ def list_trending(**kwargs):
 
 def list_popular(**kwargs):
     videos = invidious.getPopular()
+    if not videos:
+        gui.end_listing()
+        return
+
     for video in videos:
         video_id = video['videoId']
         title = video['title']
@@ -112,6 +124,10 @@ def list_channel_menu(**kwargs):
 def list_channel_videos(**kwargs):
     page_number = int(kwargs.pop('pageNumber', 1)) + 1
     videos = invidious.getVideosForChannel(kwargs.get('id'), page_number - 1)
+    if not videos:
+        gui.end_listing()
+        return
+
     for video in videos:
         video_id = video['videoId']
         title = video['title']
@@ -139,6 +155,10 @@ def list_channel_videos(**kwargs):
 
 def list_channel_latest(**kwargs):
     videos = invidious.getLatestForChannel(kwargs.get('id'))
+    if not videos:
+        gui.end_listing()
+        return
+
     for video in videos:
         video_id = video['videoId']
         title = video['title']
@@ -164,6 +184,7 @@ def list_channel_playlists(**kwargs):
     if not playlists:
         gui.end_listing()
         return
+
     for playlist in playlists:
         playlist_id = playlist['playlistId']
         title = playlist['title']
@@ -191,6 +212,7 @@ def list_channel_related(**kwargs):
     if not channel:
         gui.end_listing()
         return
+
     for channel in channel['relatedChannels']:
         channel_id = channel['authorId']
         title = channel['author']
@@ -208,6 +230,15 @@ def list_search_menu(**kwargs):
     gui.add_item('Videos', url_params={'f': 'searchVideos', 'q': '-', 'type': 'video'}, is_folder=True)
     gui.add_item('Playlists', url_params={'f': 'searchPlaylists', 'q': '-', 'type': 'playlist'}, is_folder=True)
     gui.add_item('Channels', url_params={'f': 'searchChannels', 'q': '-', 'type': 'channel'}, is_folder=True)
+    gui.add_item('Clear history...', url_params={'f': 'historyClear'}, is_playable=False)
+
+    for history in utils.getHistory():
+        if history['type'] == 'video':
+            gui.add_item('[B]History:[/B] {} in {}'.format(history['q'], history['type']), url_params={'f': 'searchVideos', 'q': history['q'], 'type': history['type']}, is_folder=True)
+        elif history['type'] == 'playlist':
+            gui.add_item('[B]History:[/B] {} in {}'.format(history['q'], history['type']), url_params={'f': 'searchPlaylists', 'q': history['q'], 'type': history['type']}, is_folder=True)
+        elif history['type'] == 'channel':
+            gui.add_item('[B]History:[/B] {} in {}'.format(history['q'], history['type']), url_params={'f': 'searchChannels', 'q': history['q'], 'type': history['type']}, is_folder=True)
 
     gui.end_listing()
 
@@ -215,7 +246,10 @@ def list_search_videos(**kwargs):
     page_number = int(kwargs.pop('pageNumber', 1)) + 1
     if page_number == 2 and kwargs.get('q') == '-':
         q = gui.get_search_input('Search')
+        if q is None:
+            return
         kwargs['q'] = q
+        utils.saveInHistory(q, 'video')
 
     if kwargs.get('id', None):
         videos = invidious.searchChannel(kwargs.get('id'), kwargs.get('q'), page_number - 1)
@@ -257,7 +291,10 @@ def list_search_playlists(**kwargs):
     page_number = int(kwargs.pop('pageNumber', 1)) + 1
     if page_number == 2 and kwargs.get('q') == '-':
         q = gui.get_search_input('Search')
+        if q is None:
+            return
         kwargs['q'] = q
+        utils.saveInHistory(q, 'playlist')
     
     if kwargs.get('id', None):
         playlists = invidious.searchChannel(kwargs.get('id'), kwargs.get('q'), page_number - 1)
@@ -294,7 +331,10 @@ def list_search_channels(**kwargs):
     page_number = int(kwargs.pop('pageNumber', 1)) + 1
     if page_number == 2 and kwargs.get('q') == '-':
         q = gui.get_search_input('Search')
+        if q is None:
+            return
         kwargs['q'] = q
+        utils.saveInHistory(q, 'channel')
 
     if kwargs.get('id', None):
         channels = invidious.searchChannel(kwargs.get('id'), kwargs.get('q'), page_number - 1)
@@ -315,7 +355,9 @@ def list_search_channels(**kwargs):
                 url_params={'f': 'channelMenu', 'id': channel_id},
                 video_info_labels={'title': title, 'plot': description, 'director': title},
                 is_folder=True,
-                total_items=LIMIT + 1)
+                context_menu_items=[
+                        ('Subscribe to [B]%s[/B]' % title, 'xbmc.Container.Update(%s?'
+                        'f=subscribe&id=%s)' % (PLUGIN_RELATIVE_PATH, channel_id))], total_items=LIMIT + 1)
 
     kwargs['f'] = 'searchChannels'
     kwargs['pageNumber'] = page_number
@@ -326,6 +368,10 @@ def list_search_channels(**kwargs):
 
 def list_videos_playlists(**kwargs):
     videos = invidious.getInfoAboutPlaylist(kwargs.get('id'))['videos']
+    if not videos:
+        gui.end_listing()
+        return
+
     for video in videos:
         video_id = video['videoId']
         title = video['title']
@@ -360,6 +406,10 @@ def list_subscriptions(**kwargs):
 
 def list_suggested_videos(**kwargs):
     videos = invidious.getInfoAboutVideo(kwargs.get('id'))['recommendedVideos']
+    if not videos:
+        gui.end_listing()
+        return
+        
     for video in videos:
         video_id = video['videoId']
         title = video['title']

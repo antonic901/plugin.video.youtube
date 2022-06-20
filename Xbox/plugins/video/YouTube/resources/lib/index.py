@@ -19,6 +19,7 @@ try:
         "searchVideos": api.list_search_videos,
         "searchPlaylists": api.list_search_playlists,
         "searchChannels": api.list_search_channels,
+        "historyClear": api.clear_history,
         "subscriptions": api.list_subscriptions,
         "settings": api.open_settings,
         "play": api.play,

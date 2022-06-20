@@ -25,6 +25,37 @@ def readTempForVideos(path="{}\\videosPayload.json".format(HOST_AND_PATH)):
     else:
         return []
 
+def getHistory(path="{}\\history.json".format(HOST_AND_PATH)):
+    if os.path.isfile(path):
+        json_data = open(path).read()
+        history = json.loads(json_data)
+        return history['history']
+    else:
+        return []
+
+def isAdded(array, q, type):
+    for query in array:
+        if query['q'].lower() == q.lower() and query['type'] == type:
+            return True
+    return False
+
+def saveInHistory(q, type, path="{}\\history.json".format(HOST_AND_PATH)):
+    updatedHistory = getHistory()
+    if isAdded(updatedHistory, q, type):
+        pass
+    else:
+        updatedHistory.append({'q': q, 'type': type})
+    payload = createJson({'history': updatedHistory})
+    f = open(path, 'w+')
+    f.write(payload)
+    f.close()
+
+def clear_history(path="{}\\history.json".format(HOST_AND_PATH)):
+    payload = createJson({'history': []})
+    f = open(path, 'w+')
+    f.write(payload)
+    f.close()
+
 def createJson(data):
     json_string = json.dumps(data)
     return json_string

@@ -69,5 +69,6 @@ def get_search_input(heading, default_text=''):
 def info_view(view_id=504):
     xbmc.executebuiltin('Container.SetViewMode(%s)' % view_id)
 
+
 def notify(text):
     xbmc.executebuiltin('Notification(Notification for user,%s,5000,DefaultIconInfo.png)' % text)
