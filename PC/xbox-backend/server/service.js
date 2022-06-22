@@ -26,10 +26,18 @@ async function makeRequest(type, url, headers, query, body) {
             body: response.data
         }
     } catch (err) {
-        return {
-            succcess: false,
-            status: err.response.status,
-            body: err.response.data
+        try {
+            return {
+                succcess: false,
+                status: err.response.status,
+                body: err.response.data
+            }
+        } catch (err) {
+            return {
+                success: true,
+                status: 404,
+                body: 'This API seems to be offline.'
+            }
         }
     }
 }

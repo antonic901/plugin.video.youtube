@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="General">
+        <setting id="gateway" label="Gateway (PC) Ip Address" type="ipaddress"></setting>
+        <setting id="port" label="Gateway (PC) Port" type="number"></setting>
+        <setting id="region" type="labelenum" label="Region:" default="US" values="US|SRB" />
+        <setting id="resolution" type="labelenum" label="Resolution:" default="360p" values="144p|360p|720p" />
+        <setting id="container" type="labelenum" label="Video Container:" default="mp4" values="mp3|mp4|avi" />
+        <setting type="lsep" label="Search options" />
+        <setting id="soptions" type="labelenum" label="Order by:" default="relevance" values="relevance|rating|upload_date|view_count" />
+        <setting type="lsep" label="Channel options" />
+        <setting id="coptions" type="labelenum" label="Sort by:" default="newest" values="newest|oldest|popular" />
+        <setting label="Import subcriptions from YouTube" type="action" action="RunPlugin(plugin://video/YouTube/?f=importSubscriptions)"/>
+    </category>
+</settings>
