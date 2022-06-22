@@ -39,6 +39,32 @@ This is plugin for XBMC4Xbox that aims to resurrect streaming of videos from You
       npm start
       ```
  - Open frontend on http://YOUR_IP_ADDRESS:9005 in your browser
+## Functionalities
+Status values:
+- ✓ - Functionality implemented
+- ✗ - Functionality not yet implemented
+
+## Xbox
+| Functionality                                     | Status |
+|---------------------------------------------------|:------:|
+| Trending videos (All, Music, Gaming, News, Movies)|   ✓    |
+| Popular Videos                                    |   ✓    |
+| Suggested Videos                                  |   ✓    |
+| Search videos, playlists, channels                |   ✓    |
+| Search history                                    |   ✓    |
+| Channel explore (Videos, Latest, Playlists, Related Channels)|   ✓    |
+| Search channel by videos and playlists            |   ✓    |
+| Subscribe to channel                              |   ✓    |
+| Unsubscribe                                       |   ✗    |
+| Import subscriptions from YouTube                 |   ✓    |
+
+## PC
+| Functionality                                     | Status |
+|---------------------------------------------------|:------:|
+| Gateway between Invidious and Xbox                |   ✓    |
+| Check status of Invidious instances               |   ✓    |
+| Change Invidious Instance                         |   ✓    |
+| Frontend                                          |   ✓    |
 
 ## Support
 <a href="https://www.buymeacoffee.com/antonic901" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
