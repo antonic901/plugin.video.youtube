@@ -1,6 +1,15 @@
 'use strict';
 
-const INVIDIOUS = "https://tube.cthd.icu";
+let file = require('./utils/file'),
+    configuration = require('./configuration');
+
+// check is configuration file present and if not create one
+if (!file.exists('./', 'configuration.json')) {
+    configuration.writeConfigurationFile(configuration.createConfigurationFile())
+}
+
+let conf = configuration.readConfigurationFile()
+let INVIDIOUS = conf.api;
 
 let express = require('express'),
     bodyParser = require('body-parser'),
@@ -19,9 +28,32 @@ api.use(function (req, res, next) {
 });
 api.use(express.static('public'));
 
+api.post('/test', function (req, res) {
+    service.makeRequest("get", encodeURI(req.body.link + '/api/v1/stats'), req.headers, req.query, null)
+        .then(r => {
+            res.statusCode = r.status
+            res.send(r.body)
+        })
+});
+
+api.put('/update-api', function (req, res) {
+    conf.api = req.body.api;
+    if (configuration.writeConfigurationFile(JSON.stringify(conf))) {
+        INVIDIOUS = conf.api;
+        res.send("Successfully update API.")
+    } else {
+        res.statusCode = 500;
+        res.send ("Can't write configuration file.")
+    }
+});
+
 api.get('/api/v1/stats', function (req, res) {
-    res.statusCode = 404;
-    res.send('Not implemented!');
+    service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/stats'), req.headers, req.query, null)
+        .then(result => {
+            result.body.providerName = INVIDIOUS;
+            res.statusCode = result.status;
+            res.send(result.body);
+        })
 });
 
 api.get('/api/v1/videos/:id', function (req, res) {

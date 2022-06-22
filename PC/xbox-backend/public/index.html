@@ -42,6 +42,8 @@
 
         Vue.use(httpVueLoader);
 
+        Vue.component("basicnotification", httpVueLoader("components/Notifications/BasicNotification.vue"))
+
         const routes = [
             {
                 path: "/",
