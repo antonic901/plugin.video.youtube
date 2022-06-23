@@ -25,7 +25,7 @@ This is plugin for XBMC4Xbox that aims to resurrect streaming of videos from You
 
 ## Setup Guide
 ### Xbox
- - From this repo, Xbox/**plugins** to the root of XBMC4Xbox folder. In most cases it's: **E:\Apps\XBMC\**
+ - From this repo, copy Xbox/**plugins** to the root of XBMC4Xbox folder. In most cases it's: **E:\Apps\XBMC\**
 ### PC
  - Install Node.js
 
@@ -74,8 +74,8 @@ TODO
 ## Some images
 ![Searching](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot003.bmp?raw=true)
 ![Channel search](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot009.bmp?raw=true)
-![Popular](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot002.bmp?raw=true)
 ![Streaming video](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot006.bmp?raw=true)
+![Popular](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot002.bmp?raw=true)
 ![Search History](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot004.bmp?raw=true)
 ![Subscriptions](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot001.bmp?raw=true)
 ![Channel](https://github.com/antonic901/xbox-youtube/blob/master/images/screenshot005.bmp?raw=true)
