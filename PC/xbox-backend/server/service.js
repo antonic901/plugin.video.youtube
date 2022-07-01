@@ -36,7 +36,7 @@ async function makeRequest(type, url, headers, query, body) {
             return {
                 success: true,
                 status: 404,
-                body: 'This API seems to be offline.'
+                body: {message: 'This API seems to be offline.'}
             }
         }
     }
