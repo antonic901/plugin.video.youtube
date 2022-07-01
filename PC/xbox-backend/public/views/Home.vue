@@ -16,71 +16,7 @@
             <v-spacer></v-spacer>
         </v-row>
         <div v-if="status">
-            <v-card class="my-5" flat>
-                <v-row>
-                    <v-col align="center">
-                        API status:<span class="ml-1" style="color:green">Online</span>
-                    </v-col> 
-                </v-row>
-                <v-card-text>
-                    <v-row no-gutters align="center" class="ml-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Software</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Name: <span>{{status.software.name}}</span>
-                        </v-col>
-                        <v-col align="center">
-                            Branch: <span>{{status.software.branch}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            Version: <span>{{status.software.version}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters align="center" class="ml-2 mt-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Usage</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Total: <span>{{status.usage.users.total}}</span>
-                        </v-col>
-                        <v-col align="center">
-                            Active per half year: <span>{{status.usage.users.activeHalfyear}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            Active per month: <span>{{status.usage.users.activeMonth}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters align="center" class="ml-2 mt-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Metadata</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Channel refreshed at: <span>{{getDateAndTime(status.metadata.lastChannelRefreshedAt * 1000)}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            API updated at: <span>{{getDateAndTime(status.metadata.updatedAt * 1000)}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row class="px-2">
-                        <v-col aling="start">
-                            Login: {{status.openRegistrations ? 'Available' : 'Not Available'}}
-                        </v-col>
-                        <v-col align="end">
-                            Version: {{status.version}}
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </v-card>
+            <ProviderStatus v-bind:status="status"></ProviderStatus>
             <v-row>
                 <v-spacer></v-spacer>
                 <v-btn v-on:click="updateApi" color="success">Update API</v-btn>
@@ -91,73 +27,9 @@
             <v-row class="mt-6" no-gutters>
                 Status of current used API ({{usedProvider.providerName}}):
             </v-row>
-            <v-card class="my-5" flat>
-                <v-row>
-                    <v-col align="center">
-                        API status:<span class="ml-1" style="color:green">Online</span>
-                    </v-col> 
-                </v-row>
-                <v-card-text>
-                    <v-row no-gutters align="center" class="ml-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Software</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Name: <span>{{usedProvider.software.name}}</span>
-                        </v-col>
-                        <v-col align="center">
-                            Branch: <span>{{usedProvider.software.branch}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            Version: <span>{{usedProvider.software.version}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters align="center" class="ml-2 mt-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Usage</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Total: <span>{{usedProvider.usage.users.total}}</span>
-                        </v-col>
-                        <v-col align="center">
-                            Active per half year: <span>{{usedProvider.usage.users.activeHalfyear}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            Active per month: <span>{{usedProvider.usage.users.activeMonth}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters align="center" class="ml-2 mt-2 grey--text font-weight-black">
-                        <v-col>
-                            <span>Metadata</span>
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row class="px-2" no gutters>
-                        <v-col align="start">
-                            Channel refreshed at: <span>{{getDateAndTime(usedProvider.metadata.lastChannelRefreshedAt * 1000)}}</span>
-                        </v-col>
-                        <v-col align="end">
-                            API updated at: <span>{{getDateAndTime(usedProvider.metadata.updatedAt * 1000)}}</span>
-                        </v-col>
-                    </v-row>
-                    <v-row class="px-2">
-                        <v-col aling="start">
-                            Login: {{usedProvider.openRegistrations ? 'Available' : 'Not Available'}}
-                        </v-col>
-                        <v-col align="end">
-                            Version: {{usedProvider.version}}
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-            </v-card>
+            <ProviderStatus v-bind:status="usedProvider"></ProviderStatus>
         </div>
-        <div class="color:red;" v-else>Current used API seems to be offline at this moment.</div>
+        <div v-else>Current used API seems to be offline at this moment.</div>
         <BasicNotification v-bind:show-notification="showNotification" v-bind:text="message" v-on:close="showNotification=false, message=''"></BasicNotification>
     </div>
 </template>
@@ -191,6 +63,7 @@ module.exports = {
                     this.message = 'Successsfully updated API.';
                     this.showNotification = true;
                     this.usedProvider = this.status;
+                    this.usedProvider.providerName = this.provider;
                     this.provider = '';
                     this.status = null;
                 })
@@ -198,10 +71,6 @@ module.exports = {
                     this.message = 'Something went wrong.';
                     this.showNotification = true;
                 })
-        },
-        getDateAndTime(milliseconds) {
-            let date = new Date(milliseconds);
-            return date.toLocaleString('en-US');
         }
     },
     created() {
@@ -210,7 +79,7 @@ module.exports = {
                 this.usedProvider = r.data;
             })
             .catch(e => {
-                this.message = 'Can not get info about current provider. Maybe its offline?'
+                this.message = 'Can not get info about ' + e.response.data.providerName + ' provider. Maybe its offline?'
                 this.showNotification = true;
             })
     }
