@@ -67,15 +67,23 @@ def getInfoAboutVideo(id):
     return video
 
 def getVideoLink(id):
-    video = getInfoAboutVideo(id)
-    if video:
-        for stream in video['formatStreams']:
-            if stream['resolution'] == RESOLUTION and stream['container'] == CONTAINER:
-                return stream['url']
-        gui.notify("Can not find streams for {} resolution.".format(RESOLUTION))
+    # video = getInfoAboutVideo(id)
+    # if video:
+    #     for stream in video['formatStreams']:
+    #         if stream['resolution'] == RESOLUTION and stream['container'] == CONTAINER:
+    #             return stream['url']
+    #     gui.notify("Can not find streams for {} resolution.".format(RESOLUTION))
+    #     return None
+    # gui.notify("Video with ID: {} can not be found.".format(id))
+    # return None
+    if RESOLUTION == '720p':
+        params = {'id': id, 'quality': '22'}
+    else:
+        params = {'id': id, 'quality': '18'}
+    response = requests.get("{}/local-stream-link".format(API), headers=HEADERS, params=params)
+    if response.status_code != 200:
         return None
-    gui.notify("Video with ID: {} can not be found.".format(id))
-    return None
+    return response.text
 
 def getInfoAboutPlaylist(id):
     params = {'fields': 'videos', 'pretty': '1'}

@@ -15,7 +15,7 @@ function writeConfigurationFile(data) {
 
 function createConfigurationFile() {
     let configuration = {
-        api: 'https://tube.cthd.icu'
+        api: 'https://vid.puffyan.us'
     };
     let data = JSON.stringify(configuration);
     return data;
