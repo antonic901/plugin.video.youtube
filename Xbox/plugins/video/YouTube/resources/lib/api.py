@@ -65,7 +65,7 @@ def list_trending(**kwargs):
             gui.end_listing()
             return
 
-        for video in videos[:LIMIT]:
+        for video in videos:
             video_id = video['videoId']
             title = video['title']
             description = video['description']

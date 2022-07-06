@@ -47,6 +47,10 @@ api.put('/update-api', function (req, res) {
     }
 });
 
+api.get('/local-stream-link', function (req, res) {
+        res.send(`${INVIDIOUS}/latest_version?id=${req.query.id}&itag=${req.query.quality}&local=true`)
+});
+
 api.get('/api/v1/stats', function (req, res) {
     service.makeRequest('get', encodeURI(INVIDIOUS + '/api/v1/stats'), req.headers, req.query, null)
         .then(result => {
