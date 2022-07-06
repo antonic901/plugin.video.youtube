@@ -1,5 +1,6 @@
 # YouTube for Original Xbox
 You can now again watch YouTube on Original Xbox!
+![Fanart](https://github.com/antonic901/xbox-youtube/blob/master/images/fanart.png?raw=true)
 
 ## Table of Contents
 - [Info](#info)
