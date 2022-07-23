@@ -2,7 +2,16 @@ import requests
 import gui
 import xbmcplugin
 
-API = "http://{}:{}".format(xbmcplugin.getSetting('gateway'), xbmcplugin.getSetting('port'))
+if xbmcplugin.getSetting('useInstance') == 'true':
+    INVIDIOUS_DIRECT = True
+else:
+    INVIDIOUS_DIRECT = False
+
+if INVIDIOUS_DIRECT:
+    API = xbmcplugin.getSetting('instance')
+else:
+    API = "http://{}:{}".format(xbmcplugin.getSetting('gateway'), xbmcplugin.getSetting('port'))
+
 REGION = xbmcplugin.getSetting("region")
 RESOLUTION =xbmcplugin.getSetting("resolution")
 CONTAINER = xbmcplugin.getSetting("container")
@@ -76,14 +85,20 @@ def getVideoLink(id):
     #     return None
     # gui.notify("Video with ID: {} can not be found.".format(id))
     # return None
+
     if RESOLUTION == '720p':
         params = {'id': id, 'quality': '22'}
     else:
         params = {'id': id, 'quality': '18'}
-    response = requests.get("{}/local-stream-link".format(API), headers=HEADERS, params=params)
-    if response.status_code != 200:
-        return None
-    return response.text
+
+    if INVIDIOUS_DIRECT:
+        local_link = "{}/latest_version?id={}&itag={}&local=true".format(API, id, params['quality'])
+        return local_link
+    else:
+        response = requests.get("{}/local-stream-link".format(API), headers=HEADERS, params=params)
+        if response.status_code != 200:
+            return None
+        return response.text
 
 def getInfoAboutPlaylist(id):
     params = {'fields': 'videos', 'pretty': '1'}
