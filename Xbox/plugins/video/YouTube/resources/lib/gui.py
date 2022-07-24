@@ -6,7 +6,7 @@ import xbmcplugin
 
 HOST_AND_PATH = sys.argv[0]
 ADDON_HANDLE = int(sys.argv[1])
-
+API = xbmcplugin.getSetting('instance')
 
 def make_info_view_possible():
     xbmcplugin.setContent(ADDON_HANDLE, 'movies')
@@ -25,6 +25,9 @@ def add_item(title,
              subtitle_list=None,
              is_folder=False,
              total_items=0):
+
+    if thumb != None and "http" not in thumb:
+        thumb = "{}{}".format(API,thumb)
     item = xbmcgui.ListItem(title, iconImage=icon, thumbnailImage=thumb)
     if video_info_labels is not None:
         item.setInfo(type='video', infoLabels=video_info_labels)
