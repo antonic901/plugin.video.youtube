@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <category label="General">
+        <setting id="useInstance" label="Enabled: Using Invidious Instance. Disabled: Using PC Gateway." type="bool" default="true"></setting>
+        <setting id="instance" label="Invidious Instance"  type="text" option="urlencoded" default="http://137.184.62.199:3000"></setting>
         <setting id="gateway" label="Gateway (PC) Ip Address" type="ipaddress"></setting>
         <setting id="port" label="Gateway (PC) Port" type="number"></setting>
         <setting id="region" type="labelenum" label="Region:" default="US" values="US|SRB" />
