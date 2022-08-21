@@ -14,6 +14,8 @@ You can now again watch YouTube on Original Xbox!
 - [Some images](#some-images)
 
 ## Info
+UPDATE: Thanks to Mr. Rochemont who is hosting Invidious instance without HTTP security protocols we can now watch YouTube without need of PC Gateway! Be sure to check this [release](https://github.com/antonic901/xbox-youtube/releases/tag/v0.0.2).
+
 This is plugin for XBMC4Xbox that aims to resurrect streaming of videos from YouTube on this dated hardware. Plugin is coded in Python and it's using Invidious for fetching data. PC application is simple backend coded in Node.js that acts like a gateway between Xbox and Invidious. Currently, this can't work without PC gateway because every public Invidious instance require TLS1.2 or higher which OpenSSL 0.9.8 doesn't support. Hovever, if someone can host Invidious instance with TLS1.0 or even unencrypted HTTP support, there is only one line in plugin that needs to be changed that will completely remove dependence for PC backend. Maybe, some day when I get free time, I'll try host my own Invidious instance.
 
 ## Requirements
