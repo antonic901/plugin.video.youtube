@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+	<category label="General">
+		<setting id="api" type="text" label="930" option="urlencoded" default="https://vid.puffyan.us"></setting>
+		<setting id="proxy" type="text" label="931" option="urlencoded" default="http://api.antonicnikola.com/xbox"></setting>
+		<setting id="use-proxy" type="bool" label="932" default="true"/>
+		<setting id="use-dash" type="bool" label="933" default="true"/>
+        <setting id="region" type="labelenum" label="934" default="US" values="US|RS" />
+		<setting label="935" type="action" action="RunPlugin(plugin://video/YouTube/?path=%2Fsubscriptions%2Fimport)"/>
+	</category>
+	<category label="Videos">
+		<setting id="video-quality" type="labelenum" label="936" default="360p" values="144p|360p|720p" />
+		<setting id="video-quality-select" type="bool" label="937" default="true"/>
+		<!-- <setting id="autoplay" type="bool" label="938" default="true"/> -->
+	</category>
+</settings>

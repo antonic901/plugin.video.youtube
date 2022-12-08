@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.youtube" name="YouTube" version="0.0.1" provider-name="antonic901">
+	<requires>
+		<import addon="xbmc.python" version="2.7.11"/>
+        <import addon="script.module.xbmcswift2" version="2.4.0" />
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<platform>xbox</platform>
+        <website>https://invidious.io</website>
+        <license>GPL-2.0-only</license>
+        <summary lang="en">Watch videos from YouTube!</summary>
+        <description lang="en_US">Stream videos from world's most popular video platform.</description>
+	</extension>
+</addon>

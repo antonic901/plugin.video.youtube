@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+    <!-- Root menu -->
+    <string id="30300">[B]Омогућио Invidious пројекат. Подржи их![/B]</string>
+    <string id="30301">Актуелно</string>
+    <string id="30302">Популарно</string>
+    <string id="30303">Претрага</string>
+    <string id="30304">Претплаћени канали</string>
+    <string id="30305">Подешавања</string>
+
+    <!-- Trending menu -->
+    <string id="430">Све</string>
+    <string id="431">Музика</string>
+    <string id="432">Гејминг</string>
+    <string id="433">Новости</string>
+    <string id="434">Филмови</string>
+
+    <!-- Channels -->
+    <string id="530">Видеи</string>
+    <string id="531">Последње</string>
+    <string id="532">Плејлисте</string>
+    <string id="533">Претрага</string>
+    <string id="534">Сви канали</string>
+
+    <!-- Search menu -->
+    <string id="630">Унеси појам за претрагу</string>
+    <string id="631">[B]Историја: [/B] {} у {}</string>
+    <string id="632">Видеи</string>
+    <string id="633">Филмови</string>
+    <string id="634">Плејлисте</string>
+    <string id="635">Канали</string>
+    <string id="636">Обриши све...</string>
+
+    <!-- Subscriptions -->
+    <string id="650">Обриши све претплаћене канале...</string>
+
+    <!-- Info Messages -->
+    <string id="730">Invidious API вратио: {}</string>
+    <string id="731">Invidious API грешка</string>
+    <string id="732">Следећа страница >> {}</string>
+    <string id="734">Успешно обрисано {} из историје претраге</string>
+    <string id="735">Успешно очишћена историја претраге</string>
+    <string id="736">Успешно увезена листа претплаћених канала</string>
+    <string id="737">E:\\subscriptions.csv није пронађен!</string>
+    <string id="738">Успешно се претплатио на {}</string>
+    <string id="739">Успешно се одјавио</string>
+    <string id="740">Успешно очишћени претплаћени канали</string>
+    <string id="741">Stream линк није могуће пронаћи</string>
+
+    <!-- Context menu -->
+    <string id="830">Иди на [B]{}[/B] канал</string>
+    <string id="831">Препоручени видеи</string>
+    <string id="832">Одјави се</string>
+    <string id="833">Претплати се</string>
+    <string id="834">Обриши из историје</string>
+
+    <!-- Settings -->
+    <string id="920">Опште</string>
+    <string id="921">Видео</string>
+
+    <string id="930">Invidious API:</string>
+    <string id="931">Proxy API:</string>
+    <string id="932">Користи proxy за конекцију:</string>
+    <string id="933">Укључи DASH како би заобишао регионално блокирање:</string>
+    <string id="934">Регија:</string>
+    <string id="935">Увези претплатнике са YouTube</string>
+
+    <string id="936">Жељени квалитет:</string>
+    <string id="937">Ручно селектуј квалитет:</string>
+    <string id="938">Аутоматски пусти следећи видео:</string>
+</strings>
