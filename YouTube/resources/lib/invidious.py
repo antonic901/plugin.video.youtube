@@ -47,4 +47,4 @@ class InvidiousApi():
             PARAMS['pretty'] = pretty
         if self.plugin.get_setting('use-proxy', bool):
             return self.make_request(self.PROXY, HEADERS, PARAMS, self.get_url(endpoint))
-        return make_request("{}{}".format(self.API, self.endpoint), HEADERS, PARAMS)
+        return self.make_request("{}{}".format(self.API, endpoint), HEADERS, PARAMS, None)
