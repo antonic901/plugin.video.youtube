@@ -30,7 +30,7 @@ def add_videos(videos):
     if videos:
         for video in videos:
             if plugin.get_setting('video-quality-select', bool):
-                path = plugin.url_for('streams', id=video['videoId'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']}))
+                path = plugin.url_for('streams', id=video['videoId'])
             else:
                 path = plugin.url_for('play', url=video['videoId'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']}))
             items.append({
@@ -218,7 +218,7 @@ def channels_menu(id):
         },
         {
             'label': plugin.get_string(531),
-            'icon': get_icon(''),
+            'icon': get_icon(),
             'path': plugin.url_for('channels_latest', id=id)
         },
         {
@@ -477,16 +477,16 @@ def settings():
 
 # Streams
 
-@plugin.route('/streams/<id>/<details>')
-def streams(id, details):
+@plugin.route('/streams/<id>')
+def streams(id):
     items = []
-    streams = invidious.fetch('/api/v1/videos/{}'.format(id))['formatStreams']
-    if streams:
-        for stream in streams:
+    video = invidious.fetch('/api/v1/videos/{}'.format(id), fields='formatStreams,title,videoThumbnails')
+    if video:
+        for stream in video['formatStreams']:
             items.append({
                 'label': '{} ({};{} / {})'.format(stream['resolution'], stream['container'], stream['encoding'], stream['type']),
-                'icon': json.loads(details)['icon'],
-                'path': plugin.url_for('play', url=stream['url'], details=details),
+                'icon': video['videoThumbnails'][3]['url'],
+                'path': plugin.url_for('play', url=stream['url'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']})),
                 'is_playable': True,
             })
     return plugin.finish(items)
