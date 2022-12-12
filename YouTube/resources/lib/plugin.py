@@ -30,7 +30,7 @@ def add_videos(videos):
     if videos:
         for video in videos:
             if plugin.get_setting('video-quality-select', bool):
-                path = plugin.url_for('streams', id=video['videoId'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']}))
+                path = plugin.url_for('streams', id=video['videoId'])
             else:
                 path = plugin.url_for('play', url=video['videoId'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']}))
             items.append({
@@ -55,14 +55,13 @@ def add_videos(videos):
 def add_playlists(playlists):
     items = []
     for playlist in playlists:
-        print(playlist['playlistThumbnail'])
         items.append({
             'label': playlist['title'],
             'thumbnail': playlist['playlistThumbnail'],
             'path': plugin.url_for('playlists_videos_id', id=playlist['playlistId'], page=1),
             'context_menu': [
                 (
-                    plugin.get_string(830).format(playlist['author'].encode('utf-8')),
+                    plugin.get_string(830).format(playlist['author']),
                     actions.update_view(plugin.url_for('channels_menu', id=playlist['authorId']))
                 ),
             ],
@@ -130,27 +129,27 @@ def show_root_menu():
     items = [
         {
             'label': plugin.get_string(30301),
-            'icon': get_icon(),
+            'icon': get_icon('trend.png'),
             'path': plugin.url_for('trending')
         },
         {
             'label': plugin.get_string(30302),
-            'icon': get_icon(),
+            'icon': get_icon('popular.png'),
             'path': plugin.url_for('popular')
         },
         {
             'label': plugin.get_string(30303),
-            'icon': get_icon(),
+            'icon': get_icon('search.png'),
             'path': plugin.url_for('search_menu')
         },
         {
             'label': plugin.get_string(30304),
-            'icon': get_icon(),
+            'icon': get_icon('sub.png'),
             'path': plugin.url_for('subscriptions')
         },
         {
             'label': plugin.get_string(30305),
-            'icon': get_icon(),
+            'icon': get_icon('settings.png'),
             'path': plugin.url_for('settings')
         },
     ]
@@ -165,27 +164,27 @@ def trending():
     items = [
         {
             'label': plugin.get_string(430),
-            'icon': get_icon(),
+            'icon': get_icon('all.png'),
             'path': plugin.url_for('trending_videos', type='Default')
         },
         {
             'label': plugin.get_string(431),
-            'icon': get_icon(),
+            'icon': get_icon('music.png'),
             'path': plugin.url_for('trending_videos', type='Music')
         },
         {
             'label': plugin.get_string(432),
-            'icon': get_icon(),
+            'icon': get_icon('game.png'),
             'path': plugin.url_for('trending_videos', type='Gaming')
         },
         {
             'label': plugin.get_string(433),
-            'icon': get_icon(),
+            'icon': get_icon('news.png'),
             'path': plugin.url_for('trending_videos', type='News')
         },
         {
             'label': plugin.get_string(434),
-            'icon': get_icon(),
+            'icon': get_icon('movies.png'),
             'path': plugin.url_for('trending_videos', type='Movies')
         }
     ]
@@ -224,12 +223,12 @@ def channels_menu(id):
         },
         {
             'label': plugin.get_string(532),
-            'icon': get_icon(),
+            'icon': get_icon('playlist.png'),
             'path': plugin.url_for('channels_playlists', id=id)
         },
         {
             'label': plugin.get_string(533),
-            'icon': get_icon(),
+            'icon': get_icon('search.png'),
             'path': plugin.url_for('channels_search', id=id, query='-', page=0)
         },
         {
@@ -299,12 +298,12 @@ def search_menu():
         },
         {
             'label': plugin.get_string(633),
-            'icon': get_icon(),
+            'icon': get_icon('movies.png'),
             'path': plugin.url_for('search', type='movie')
         },
         {
             'label': plugin.get_string(634),
-            'icon': get_icon(),
+            'icon': get_icon('playlist.png'),
             'path': plugin.url_for('search', type='playlist')
         },
         {
@@ -478,16 +477,16 @@ def settings():
 
 # Streams
 
-@plugin.route('/streams/<id>/<details>')
-def streams(id, details):
+@plugin.route('/streams/<id>')
+def streams(id):
     items = []
-    streams = invidious.fetch('/api/v1/videos/{}'.format(id))['formatStreams']
-    if streams:
-        for stream in streams:
+    video = invidious.fetch('/api/v1/videos/{}'.format(id), fields='formatStreams,title,videoThumbnails')
+    if video:
+        for stream in video['formatStreams']:
             items.append({
                 'label': '{} ({};{} / {})'.format(stream['resolution'], stream['container'], stream['encoding'], stream['type']),
-                'icon': json.loads(details)['icon'],
-                'path': plugin.url_for('play', url=stream['url'], details=details),
+                'icon': video['videoThumbnails'][3]['url'],
+                'path': plugin.url_for('play', url=stream['url'], details=json.dumps({'label': video['title'], 'icon': video['videoThumbnails'][3]['url']})),
                 'is_playable': True,
             })
     return plugin.finish(items)
