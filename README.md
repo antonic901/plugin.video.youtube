@@ -5,49 +5,39 @@ You can now again watch YouTube on Original Xbox!
 ## Table of Contents
 - [Info](#info)
 - [Requirements](#requirements)
-- [Setup Guide](#setup-guide)
+- [How to install](#how-to-install)
 - [Running](#running)
 - [Functionalities](#functionalities)
-  * [Xbox functionalities](#xbox)
-  * [PC funcionalities](#pc)
 - [Video](#video)
 - [Some images](#some-images)
 
 ## Info
-### UPDATE: Thanks to Mr. Rochemont who is hosting Invidious instance without HTTP security protocols we can now watch YouTube without need of PC Gateway! Be sure to check this [release](https://github.com/antonic901/xbox-youtube/releases/tag/v0.0.2).
-
-This is plugin for XBMC4Xbox that aims to resurrect streaming of videos from YouTube on this dated hardware. Plugin is coded in Python and it's using Invidious for fetching data. PC application is simple backend coded in Node.js that acts like a gateway between Xbox and Invidious. Currently, this can't work without PC gateway because every public Invidious instance require TLS1.2 or higher which OpenSSL 0.9.8 doesn't support. Hovever, if someone can host Invidious instance with TLS1.0 or even unencrypted HTTP support, there is only one line in plugin that needs to be changed that will completely remove dependence for PC backend. Maybe, some day when I get free time, I'll try host my own Invidious instance.
+This is plugin for XBMC4Xbox that aims to resurrect streaming of videos from YouTube on this dated hardware. Plugin is coded in Python and it's using [Invidious](https://invidious.io) for fetching data.
 
 ## Requirements
-- **Xbox**
-    + You need softmodded or hardmodded Xbox
-    + You need latest release of [XBMC4Xbox](https://www.dropbox.com/sh/8mcip8xsfe1zjap/AABSR3_toPPiFn-7OqwQY_JIa)
-- **PC**
-    + [Node.js](https://nodejs.org/en/download/)
-    + PC with Windows, Linux or macOS
+ - You need softmodded or hardmodded Xbox
+ - You need latest release of [XBMC4Xbox](https://www.xbmc4xbox.org.uk/) as your main Dashboard
+ - You know how to transfer files between your PC and Xbox (a.k.a know how to use FTP to transfer files)
 
-## Setup Guide
-### Xbox
- - From this repo, copy Xbox/**plugins** to the root of XBMC4Xbox folder. In most cases it's: **E:\Apps\XBMC\**
-### PC
- - Install Node.js
+## How to install
+ - Download latest release from [here](https://github.com/antonic901/xbox-youtube/releases)
+ - Extract downloaded archive.
+ - Before we begin installing plugin you first need to checkout does your XBMC4Xbox have all required modules. Go to **Q:\scripts\\.modules** and check does this folder contain these four modules:
+    + **script.module.beautifulsoup**
+    + **script.module.xbmcaddon**
+    + **script.module.xbmcswift2** (this is probably the one that you don't have, but don't worry!)
+    + **script.module.xbmcvfs**
+ - If you have all of four modules installed jump to next step, but if not keep reading! When you extracted downloaded archive you could notice two folders of which one is **modules**. Inside this folder you will find all modules required by this plugin. Depending on which module you are missing, copy that module to **Q:\scripts\\.modules** (INFO: in most cases you won't have xmbcswift2 module. You can also install it using Addons4Xbox Installer)
+ - Finally, install plugin by copying **YouTube** folder from archive to **Q:\plugins\video**
 
 ## Running
-### Xbox
- - Open plugin from XBMC4Xbox located in Videos -> Plugins
-### PC
- - Open PC/xbox-backend in terminal/console and type:
-      ```bash
-      npm install
-      npm start
-      ```
- - Open frontend on http://YOUR_IP_ADDRESS:9005 in your browser
+- Open plugin from XBMC4Xbox located in Videos -> Plugins
+
 ## Functionalities
 Status values:
 - ✓ - Functionality implemented
 - ✗ - Functionality not yet implemented
 
-## Xbox
 | Functionality                                     | Status |
 |---------------------------------------------------|:------:|
 | Trending videos (All, Music, Gaming, News, Movies)|   ✓    |
@@ -57,17 +47,10 @@ Status values:
 | Search history                                    |   ✓    |
 | Channel explore (Videos, Latest, Playlists, Related Channels)|   ✓    |
 | Search channel by videos and playlists            |   ✓    |
-| Subscribe to channel                              |   ✓    |
-| Unsubscribe                                       |   ✗    |
+| Subscribe/Unsubscribe to/from channel             |   ✓    |
 | Import subscriptions from YouTube                 |   ✓    |
-
-## PC
-| Functionality                                     | Status |
-|---------------------------------------------------|:------:|
-| Gateway between Invidious and Xbox                |   ✓    |
-| Check status of Invidious instances               |   ✓    |
-| Change Invidious Instance                         |   ✓    |
-| Frontend                                          |   ✓    |
+| Autoplay next video                               |   ✗    |
+| HLS and DASH adaptive streams (Lives)             |   ✗    |
 
 ## Support
 <a href="https://www.buymeacoffee.com/antonic901" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
