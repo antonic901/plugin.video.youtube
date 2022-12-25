@@ -1,6 +1,8 @@
 # YouTube for Original Xbox
 You can now again watch YouTube on Original Xbox!
 ![Fanart](https://github.com/antonic901/xbox-youtube/blob/master/images/fanart.png?raw=true)
+## Support
+<a href="https://www.buymeacoffee.com/antonic901" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ## Table of Contents
 - [Info](#info)
@@ -51,9 +53,6 @@ Status values:
 | Import subscriptions from YouTube                 |   ✓    |
 | Autoplay next video                               |   ✗    |
 | HLS and DASH adaptive streams (Lives)             |   ✗    |
-
-## Support
-<a href="https://www.buymeacoffee.com/antonic901" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ## Video
 [![Watch the video](https://i.postimg.cc/7Y2g3QyT/Screenshot-from-2022-06-23-13-35-13.png)](https://youtu.be/At9XPKZNprM)
