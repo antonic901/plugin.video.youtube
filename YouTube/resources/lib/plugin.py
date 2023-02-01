@@ -242,7 +242,7 @@ def channels_menu(id):
 @plugin.route('/channels/videos/<id>/<page>')
 def channels_videos(id, page):
     page = int(page)
-    items = add_videos(invidious.fetch('/api/v1/channels/videos/{}'.format(id), page=page))
+    items = add_videos(invidious.fetch('/api/v1/channels/videos/{}'.format(id), page=page).get('videos', None))
     if items:
         items.append({
             'label': plugin.get_string(732).format(page + 1),
