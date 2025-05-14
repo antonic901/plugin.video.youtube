@@ -17,5 +17,6 @@
         <source>https://github.com/antonic901/plugin.video.invidious</source>
         <summary lang="en_GB">Watch YouTube using Invidious</summary>
         <description lang="en_GB">YouTube is one of the biggest video-sharing websites of the world.</description>
+        <disclaimer>It's recommended to use self-hosted Invidious instance!</disclaimer>
     </extension>
 </addon>
