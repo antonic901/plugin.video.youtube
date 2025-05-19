@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="General">
+        <setting id="instance" label="Invidious Instance"  type="text" option="urlencoded" default="http://192.168.0.30:3000"></setting>
+        <setting id="region" type="labelenum" label="Region:" default="US" values="DE|RS|UK|US" />
+        <setting id="resolution" type="labelenum" label="Resolution:" default="360p" values="144p|240p|360p|480p|720p" />
+        <!-- <setting label="Import subcriptions from YouTube..." type="action" action="RunPlugin(plugin://plugin.video.invidious/?route=import_subcriptions"/> -->
+    </category>
+</settings>
